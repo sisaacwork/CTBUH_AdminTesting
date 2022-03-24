@@ -1,0 +1,1484 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Infill Residential Tower Coming to Chicago's Lakefront</title>
+
+    <link href="https://www.ctbuh.org/css/www/app.css" rel="stylesheet">
+    <link href="https://www.ctbuh.org/css/header.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <link rel="shortcut icon" href="https://pasteboard.co/NOSOR3YQzEmw.png">
+
+    <!-- If jQuery object returns an error (e.g. blocked in China) fallback to this CDN -->
+    <script> window.jQuery || document.write('<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"><\/script>');</script>
+
+        <link href="https://api.mapbox.com/mapbox-gl-js/v1.3.2/mapbox-gl.css" rel="stylesheet"/>
+    <meta name="post_id" content="3529">
+    <style>
+        .wide-div {
+            width: 100vw;
+            margin-left: calc(-50vw + 50%);
+        }
+
+        #story_body_sidebar {
+            left: 100%;
+            top: 0;
+            overflow: auto;
+        }
+
+        #story_container p {
+            margin-bottom: 1rem;
+        }
+
+        .sidebar-nav {
+            position: fixed;
+            top: 42%;
+            bottom: auto;
+            z-index: 200;
+            height: 10em;
+        }
+
+        .sidebar-nav a:hover > span.text {
+            display: inline;
+        }
+
+        .bg-light-black {
+            background-color: #343f4b;
+        }
+    </style>
+
+    <!-- custom block CSS begin -->
+        <!-- custom block CSS end -->
+
+    <script src="//cdn.jsdelivr.net/algoliasearch/3/algoliasearch.min.js"></script>
+    <script src="//cdn.jsdelivr.net/algoliasearch.helper/2.0.0/algoliasearch.helper.min.js"></script>
+
+    <script src="/js/hogan.min.js"></script>
+    <script src="/js/jquery.typeahead.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/image-map-resizer/1.0.10/js/imageMapResizer.min.js"></script>
+    <script src="/js/global/access-locks.js"></script>
+
+    <script>
+        var skyscraper_url = "https://www.skyscrapercenter.com";
+        window.logged_in = false;
+        window.logged_in_url = window.location.href.indexOf('logged_in=true') !== -1;
+        window.access_level = 1;
+        console.log('Access Level:' + window.access_level);
+    </script>
+
+</head>
+
+<body class="antialiased font-body text-base">
+
+<div id="app">
+    <div id='header'>
+    <div class="flex flex-wrap">
+        <div id="top-nav-menu" class="w-full text-white lg:pt-4 px-4">
+            <nav class="container flex items-center flex-wrap justify-end">
+                <div class="flex mobile-show-hide-nav top-nav-block">
+                    <a class="block ml-2 lg:ml-6 my-3 lg:inline-block lg:mt-0 mr-4 cursor-pointer"
+                       onclick="showModal();">Sign Up</a>
+                    <a class="block ml-2 lg:ml-6 my-3 lg:inline-block lg:mt-0 mr-4"
+                       href="https://www.ctbuh.org/membership">Join</a>
+                    <a class="block ml-2 lg:ml-6 my-3 lg:inline-block lg:mt-0 mr-4"
+                       href='https://store.ctbuh.org' target="_blank">Shop</a>
+                                            <a class="block ml-2 lg:ml-6 my-3 lg:inline-block lg:mt-0 mr-4"
+                           href="/oauth/login">Login</a>
+                    
+                    <ul class="list-reset lg:flex md:items-center lg:h-8 sub-menu">
+                        <li class="mb-12 lg:mb-0">
+
+                        </li>
+                    </ul>
+
+                    <img id="search-top-img" src="/new-img/icons/search.png">
+                    <img id="close-search-input" src="/new-img/icons/close-menu.png">
+
+                    <div id='search-top-container'>
+                                                    <div id='header-search'>
+    <form class='form-inline custom-search-form' action='https://www.skyscrapercenter.com/search' method='get'
+          style="margin: 0">
+        <input type='text'
+               class='input-xlarge typeahead search-inputs rounded p-1 text-black'
+               name='q' autocomplete='off' spellcheck='false'
+               placeholder="Search Buildings, Companies & Locations"
+        />
+    </form>
+
+    <script type='text/javascript'>
+        $(document).ready(function () {
+            var algolia = algoliasearch('VQAAT9TYC4', 'eec96cb29df3072743c09f1cbb793281');
+            var algoliaCTBUH = algolia.initIndex('www_sitewide_search');
+            var algoliaCompanies = algolia.initIndex('SC_Companies');
+            var algoliaPeople = algolia.initIndex('v2_people');
+            var algoliaBuildings = algolia.initIndex('SC_Buildings');
+            var algoliaComplexes = algolia.initIndex('SC_Complexes');
+            var algoliaCities = algolia.initIndex('v2_cities');
+            var algoliaCountries = algolia.initIndex('v2_countries');
+
+            var templateCTBUH = Hogan.compile('<div class="main-site"><a href="{{ url }}"><span class="text-black block">{{ title }} <small>({{ type }})</small></span></a></div>');
+            var templateCompany = Hogan.compile('<div class="company"><a href="' + skyscraper_url + '/company/{{ id }}"><span class="text-black block">{{{ _highlightResult.name.value }}}</span></a></div>');
+            var templatePerson = Hogan.compile('<div class="person"><a href="{{ profile_link }}"><span class="text-black block">{{{ name }}}</span></a></div>');
+            var templateBuilding = Hogan.compile('<div class="building"><a href="' + skyscraper_url + '{{ url }}"><span class="text-black block">{{{ nameToUse }}}{{{ cityToUse }}}</span></a></div>');
+            var templateComplex = Hogan.compile('<div class="complex"><a href="' + skyscraper_url + '{{ url }}"><span class="text-black block">{{{ nameToUse }}}{{{ cityToUse }}}</span></a></div>');
+            var templateCity = Hogan.compile('<div class="city"><a href="' + skyscraper_url + '/city/{{ url_name }}"><span class="text-black block">{{ name }}</span></a></div>');
+            var templateCountry = Hogan.compile('<div class="country"><a href="' + skyscraper_url + '/country/{{ url_name }}"><span class="text-black block">{{ name }}</span></a></div>');
+
+            var typeaheadCtrl = $('.search-inputs').typeahead({
+                minLength: 3,
+                hint: false,
+                highlight: false
+            }, [
+                {
+                    source: algoliaCTBUH.ttAdapter({
+                        hitsPerPage: 3,
+                        replaceSynonymsInHighlight: false,
+                        typoTolerance: 'strict'
+                    }),
+                    displayKey: 'title',
+                    templates: {
+                        header: "<div class='category'>CTBUH</div>",
+                        suggestion: function (hit) {
+                            return templateCTBUH.render(hit);
+                        },
+                    }
+                },
+                {
+                    source: algoliaPeople.ttAdapter({
+                        hitsPerPage: 3,
+                        replaceSynonymsInHighlight: false,
+                        typoTolerance: 'strict',
+                        filters: 'public_search = 1'
+                    }),
+                    displayKey: 'name',
+                    templates: {
+                        header: "<div class='category'>People</div>",
+                        suggestion: function (hit) {
+                            hit.url = hit.profile_link;
+                            return templatePerson.render(hit);
+
+                        },
+                    }
+                },
+                {
+                    source: algoliaBuildings.ttAdapter({
+                        hitsPerPage: 4,
+                        replaceSynonymsInHighlight: false,
+                        typoTolerance: 'strict'
+                    }),
+                    displayKey: 'name',
+                    templates: {
+                        header: "<div class='category'>Buildings</div>",
+                        suggestion: function (hit) {
+                            var cityToUse = '';
+                            var nameToUse = hit._highlightResult.name.value;
+
+                            if (hit.city != '') {
+                                cityToUse = ' <small>(' + hit.city + ')</small>';
+                            }
+
+                            hit.cityToUse = cityToUse;
+                            hit.nameToUse = nameToUse;
+
+                            return templateBuilding.render(hit);
+                        }
+                    }
+                },
+                {
+                    source: algoliaComplexes.ttAdapter({
+                        hitsPerPage: 3,
+                        replaceSynonymsInHighlight: false,
+                        typoTolerance: 'strict'
+                    }),
+                    displayKey: 'name',
+                    templates: {
+                        header: "<div class='category'>Building Complexes</div>",
+                        suggestion: function (hit) {
+                            var cityToUse = '';
+                            var nameToUse = hit._highlightResult.name.value;
+
+                            if (hit.city != '') {
+                                cityToUse = ' <small>(' + hit.city + ')</small>';
+                            }
+
+                            hit.cityToUse = cityToUse;
+                            hit.nameToUse = nameToUse;
+
+                            return templateComplex.render(hit);
+                        }
+                    }
+                },
+                {
+                    source: algoliaCompanies.ttAdapter({
+                        hitsPerPage: 3,
+                        replaceSynonymsInHighlight: false,
+                        typoTolerance: 'strict'
+                    }),
+                    displayKey: 'name',
+                    templates: {
+                        header: "<div class='category'>Companies</div>",
+                        suggestion: function (hit) {
+                            hit.url = '/company/' + hit.id;
+                            return templateCompany.render(hit);
+
+                        },
+                    }
+                },
+                {
+                    source: algoliaCities.ttAdapter({
+                        hitsPerPage: 3,
+                        replaceSynonymsInHighlight: false,
+                        typoTolerance: 'strict'
+                    }),
+                    displayKey: 'name',
+                    templates: {
+                        header: "<div class='category'>Cities</div>",
+                        suggestion: function (hit) {
+                            if (hit.slug) {
+                                hit.url_name = hit.slug;
+                            } else {
+                                hit.url_name = hit.name.replace(/ /g, '-').toLowerCase();
+                            }
+
+                            return templateCity.render(hit);
+                        },
+                    }
+                },
+                {
+                    source: algoliaCountries.ttAdapter({
+                        hitsPerPage: 3,
+                        replaceSynonymsInHighlight: false,
+                        typoTolerance: 'strict'
+                    }),
+                    displayKey: 'name',
+                    templates: {
+                        header: "<div class='category'>Countries</div>",
+                        suggestion: function (hit) {
+                            hit.url_name = hit.name.replace(/ /g, '-').toLowerCase();
+                            return templateCountry.render(hit);
+                        },
+                    }
+                }
+            ]);
+
+            typeaheadCtrl.on('typeahead:selected', function (evt, data) {
+                if (false && typeof data.url === "undefined") {
+                    alert(JSON.stringify(data));
+                } else {
+                    window.location = 'https://' + window.location.host + data.url;
+                }
+            });
+
+            // Append view all link
+            var AllResults = document.getElementsByClassName('all-results');
+            if (AllResults.length == 0) {
+                $('.tt-dropdown-menu').append('<h5 class="category all-results"><a id="view-all-link" href="/search"><span class="text-black">View all results</span></a></h5>');
+            }
+
+            $('#view-all-link').on('click', function (e) {
+                e.preventDefault();
+                window.location = skyscraper_url + '/search#q=' + $('.search-inputs').val();
+            });
+
+            // Append Algolia credit
+            var AlgoliaCredits = document.getElementsByClassName('powered-by-algoliasearch');
+            if (AlgoliaCredits.length == 0) {
+                $('.tt-dropdown-menu').append('<div class="powered-by-algoliasearch"><small><em>Powered by</em></small><a href="https://www.algolia.com/?utm_source=skyscrapercenter&amp;utm_medium=link&amp;utm_campaign=skyscrapercenter_search" title="Algolia Realtime Search" target="_blank"><img src="https://www.skyscrapercenter.com/img/algolia.png" alt="Algolia Realtime Search" width="48" height="15"></a></div>');
+            }
+        });
+    </script>
+</div>                                            </div>
+                </div>
+
+            </nav>
+        </div>
+        <div class="container order-first flex justify-between items-center lg:order-last pb-3">
+            <div id='header-middle-nav' class='flex justify-between w-full flex-wrap'>
+
+                <div id="logo-img-container" class='flex items-center pt-2'>
+                    <a class='inline-block' href='/'>
+                        <img src="https://www.ctbuh.org/images/CTBUH-Logo.png" class="hidden md:block"
+                             alt='Council on Tall Buildings and Urban Habitat'/>
+
+                        <div class="block md:hidden text-center py-1 w-full">
+                            <img src="https://cloud.ctbuh.org/www/common/CTBUH2-logo-white.png"
+                                 alt='Council on Tall Buildings and Urban Habitat'>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="flex items-center justify-end">
+                    <img id="search-mobile-img" class="lg:hidden lg:mt-0"
+                         src="https://www.ctbuh.org/new-img/icons/search.png">
+                    <img id="search-mobile-img-close" class="lg:hidden lg:mt-0"
+                         src="https://www.ctbuh.org/new-img/icons/close-menu.png">
+
+                    <img id="mobile-menu-open-button" class="ml-6 lg:hidden lg:mt-0"
+                         src="https://www.ctbuh.org/new-img/icons/open-menu.png">
+                    <img id="mobile-menu-close-button" class="ml-6 lg:mt-0"
+                         src="https://www.ctbuh.org/new-img/icons/close-menu.png">
+                </div>
+
+                <div class='col-span-1 md:col-span-2 lg:flex flex-row-reverse items-end mobile-show-hide-nav'>
+                    <nav class="flex-row lg:justify-between lg:mx-0 pt-12 lg:pt-0" id="middle-nav-nav">
+                        <ul class="pl-4 lg:pl-0 list-reset lg:flex md:items-center lg:h-8" id="header-menu-middle">
+                                                            <li class="ml-6 mb-12 lg:mb-0 lg:ml-6">
+                                    <a href='#'>Database </a>
+
+                                                                            <i class='show-sub-menu mr-6 fas fa-angle-right'></i>
+                                        <div class="sub-menu-items-container">
+                                            <ul>
+                                                                                                    <li class="mb-12 lg:mb-2">
+                                                        <a href="https://www.skyscrapercenter.com/buildings"
+                                                           target="_self">
+                                                            Tallest Building Lists
+                                                        </a>
+                                                    </li>
+                                                                                                    <li class="mb-12 lg:mb-2">
+                                                        <a href="https://www.skyscrapercenter.com/explore-data"
+                                                           target="_self">
+                                                            Explore Building Data
+                                                        </a>
+                                                    </li>
+                                                                                                    <li class="mb-12 lg:mb-2">
+                                                        <a href="https://www.ctbuh.org/map"
+                                                           target="_self">
+                                                            Interactive Map
+                                                        </a>
+                                                    </li>
+                                                                                                    <li class="mb-12 lg:mb-2">
+                                                        <a href="https://www.skyscrapercenter.com/cities"
+                                                           target="_self">
+                                                            Cities
+                                                        </a>
+                                                    </li>
+                                                                                                    <li class="mb-12 lg:mb-2">
+                                                        <a href="https://www.skyscrapercenter.com/countries"
+                                                           target="_self">
+                                                            Countries
+                                                        </a>
+                                                    </li>
+                                                                                                    <li class="mb-12 lg:mb-2">
+                                                        <a href="https://www.ctbuh.org/resource/height"
+                                                           target="_self">
+                                                            Tall Building Criteria
+                                                        </a>
+                                                    </li>
+                                                                                                    <li class="mb-12 lg:mb-2">
+                                                        <a href="/buildings-of-distinction"
+                                                           target="_self">
+                                                            Buildings of Distinction
+                                                        </a>
+                                                    </li>
+                                                                                                    <li class="mb-12 lg:mb-2">
+                                                        <a href="https://www.skyscrapercenter.com/quick-lists"
+                                                           target="_self">
+                                                            Generate Building Lists
+                                                        </a>
+                                                    </li>
+                                                                                                    <li class="mb-12 lg:mb-2">
+                                                        <a href="https://www.skyscrapercenter.com/height-calculator"
+                                                           target="_self">
+                                                            Height Calculator
+                                                        </a>
+                                                    </li>
+                                                                                            </ul>
+                                        </div>
+                                                                    </li>
+                                                            <li class="ml-6 mb-12 lg:mb-0 lg:ml-6">
+                                    <a href='#'>News &amp; Events </a>
+
+                                                                            <i class='show-sub-menu mr-6 fas fa-angle-right'></i>
+                                        <div class="sub-menu-items-container">
+                                            <ul>
+                                                                                                    <li class="mb-12 lg:mb-2">
+                                                        <a href="https://www.ctbuh.org/global-news"
+                                                           target="_self">
+                                                            Tall & Urban News
+                                                        </a>
+                                                    </li>
+                                                                                                    <li class="mb-12 lg:mb-2">
+                                                        <a href="https://www.ctbuh.org/events/calendar"
+                                                           target="_self">
+                                                            Calendar
+                                                        </a>
+                                                    </li>
+                                                                                                    <li class="mb-12 lg:mb-2">
+                                                        <a href="https://www.ctbuh.org/events/conferences"
+                                                           target="_self">
+                                                            Conferences
+                                                        </a>
+                                                    </li>
+                                                                                                    <li class="mb-12 lg:mb-2">
+                                                        <a href="https://awards.ctbuh.org/"
+                                                           target="_blank">
+                                                            Awards Program
+                                                        </a>
+                                                    </li>
+                                                                                                    <li class="mb-12 lg:mb-2">
+                                                        <a href="https://www.ctbuh.org/ctbuh-news"
+                                                           target="_self">
+                                                            CTBUH News
+                                                        </a>
+                                                    </li>
+                                                                                            </ul>
+                                        </div>
+                                                                    </li>
+                                                            <li class="ml-6 mb-12 lg:mb-0 lg:ml-6">
+                                    <a href='#'>Research </a>
+
+                                                                            <i class='show-sub-menu mr-6 fas fa-angle-right'></i>
+                                        <div class="sub-menu-items-container">
+                                            <ul>
+                                                                                                    <li class="mb-12 lg:mb-2">
+                                                        <a href="https://www.ctbuh.org/research/projects"
+                                                           target="_self">
+                                                            Research Projects
+                                                        </a>
+                                                    </li>
+                                                                                                    <li class="mb-12 lg:mb-2">
+                                                        <a href="https://store.ctbuh.org/12-books-reports"
+                                                           target="_blank">
+                                                            Publications
+                                                        </a>
+                                                    </li>
+                                                                                                    <li class="mb-12 lg:mb-2">
+                                                        <a href="https://www.ctbuh.org/data-studies"
+                                                           target="_self">
+                                                            Data Studies
+                                                        </a>
+                                                    </li>
+                                                                                                    <li class="mb-12 lg:mb-2">
+                                                        <a href="https://www.ctbuh.org/resource/research-papers"
+                                                           target="_self">
+                                                            Research Papers
+                                                        </a>
+                                                    </li>
+                                                                                                    <li class="mb-12 lg:mb-2">
+                                                        <a href="https://www.ctbuh.org/resource/videos"
+                                                           target="_self">
+                                                            Video Library
+                                                        </a>
+                                                    </li>
+                                                                                            </ul>
+                                        </div>
+                                                                    </li>
+                                                            <li class="ml-6 mb-12 lg:mb-0 lg:ml-6">
+                                    <a href='#'>Academic </a>
+
+                                                                            <i class='show-sub-menu mr-6 fas fa-angle-right'></i>
+                                        <div class="sub-menu-items-container">
+                                            <ul>
+                                                                                                    <li class="mb-12 lg:mb-2">
+                                                        <a href="/academic/collaborations"
+                                                           target="_self">
+                                                            Collaborations
+                                                        </a>
+                                                    </li>
+                                                                                                    <li class="mb-12 lg:mb-2">
+                                                        <a href="/academic/masters-program"
+                                                           target="_self">
+                                                            Masters Program
+                                                        </a>
+                                                    </li>
+                                                                                                    <li class="mb-12 lg:mb-2">
+                                                        <a href="/academic/funding-and-competitions"
+                                                           target="_self">
+                                                            Funding and Competitions
+                                                        </a>
+                                                    </li>
+                                                                                            </ul>
+                                        </div>
+                                                                    </li>
+                                                            <li class="ml-6 mb-12 lg:mb-0 lg:ml-6">
+                                    <a href='#'>Membership </a>
+
+                                                                            <i class='show-sub-menu mr-6 fas fa-angle-right'></i>
+                                        <div class="sub-menu-items-container">
+                                            <ul>
+                                                                                                    <li class="mb-12 lg:mb-2">
+                                                        <a href="https://www.ctbuh.org/membership"
+                                                           target="_self">
+                                                            Join
+                                                        </a>
+                                                    </li>
+                                                                                                    <li class="mb-12 lg:mb-2">
+                                                        <a href="https://www.ctbuh.org/involved"
+                                                           target="_self">
+                                                            Get Involved
+                                                        </a>
+                                                    </li>
+                                                                                                    <li class="mb-12 lg:mb-2">
+                                                        <a href="https://www.ctbuh.org/about/regional-representation"
+                                                           target="_self">
+                                                            Chapters & Regions
+                                                        </a>
+                                                    </li>
+                                                                                                    <li class="mb-12 lg:mb-2">
+                                                        <a href="https://www.ctbuh.org/committees"
+                                                           target="_self">
+                                                            Committees
+                                                        </a>
+                                                    </li>
+                                                                                                    <li class="mb-12 lg:mb-2">
+                                                        <a href="https://www.skyscrapercenter.com/companies"
+                                                           target="_self">
+                                                            Member Companies
+                                                        </a>
+                                                    </li>
+                                                                                                    <li class="mb-12 lg:mb-2">
+                                                        <a href="https://www.ctbuh.org/people"
+                                                           target="_self">
+                                                            People
+                                                        </a>
+                                                    </li>
+                                                                                            </ul>
+                                        </div>
+                                                                    </li>
+                                                            <li class="ml-6 mb-12 lg:mb-0 lg:ml-6">
+                                    <a href='#'>About </a>
+
+                                                                            <i class='show-sub-menu mr-6 fas fa-angle-right'></i>
+                                        <div class="sub-menu-items-container">
+                                            <ul>
+                                                                                                    <li class="mb-12 lg:mb-2">
+                                                        <a href="https://www.ctbuh.org/about"
+                                                           target="_self">
+                                                            About CTBUH
+                                                        </a>
+                                                    </li>
+                                                                                                    <li class="mb-12 lg:mb-2">
+                                                        <a href="https://www.ctbuh.org/about/leadership"
+                                                           target="_self">
+                                                            Leadership
+                                                        </a>
+                                                    </li>
+                                                                                                    <li class="mb-12 lg:mb-2">
+                                                        <a href="https://www.ctbuh.org/history"
+                                                           target="_self">
+                                                            History
+                                                        </a>
+                                                    </li>
+                                                                                                    <li class="mb-12 lg:mb-2">
+                                                        <a href="https://www.ctbuh.org/about/contact"
+                                                           target="_self">
+                                                            Offices & Staff
+                                                        </a>
+                                                    </li>
+                                                                                            </ul>
+                                        </div>
+                                                                    </li>
+                                                    </ul>
+                    </nav>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div id='search-middle-container' class="w-full">
+        <div id='header-search'>
+    <form class='form-inline custom-search-form' action='https://www.skyscrapercenter.com/search' method='get'
+          style="margin: 0">
+        <input type='text'
+               class='input-xlarge typeahead search-inputs rounded p-1 text-black'
+               name='q' autocomplete='off' spellcheck='false'
+               placeholder="Search Buildings, Companies & Locations"
+        />
+    </form>
+
+    <script type='text/javascript'>
+        $(document).ready(function () {
+            var algolia = algoliasearch('VQAAT9TYC4', 'eec96cb29df3072743c09f1cbb793281');
+            var algoliaCTBUH = algolia.initIndex('www_sitewide_search');
+            var algoliaCompanies = algolia.initIndex('SC_Companies');
+            var algoliaPeople = algolia.initIndex('v2_people');
+            var algoliaBuildings = algolia.initIndex('SC_Buildings');
+            var algoliaComplexes = algolia.initIndex('SC_Complexes');
+            var algoliaCities = algolia.initIndex('v2_cities');
+            var algoliaCountries = algolia.initIndex('v2_countries');
+
+            var templateCTBUH = Hogan.compile('<div class="main-site"><a href="{{ url }}"><span class="text-black block">{{ title }} <small>({{ type }})</small></span></a></div>');
+            var templateCompany = Hogan.compile('<div class="company"><a href="' + skyscraper_url + '/company/{{ id }}"><span class="text-black block">{{{ _highlightResult.name.value }}}</span></a></div>');
+            var templatePerson = Hogan.compile('<div class="person"><a href="{{ profile_link }}"><span class="text-black block">{{{ name }}}</span></a></div>');
+            var templateBuilding = Hogan.compile('<div class="building"><a href="' + skyscraper_url + '{{ url }}"><span class="text-black block">{{{ nameToUse }}}{{{ cityToUse }}}</span></a></div>');
+            var templateComplex = Hogan.compile('<div class="complex"><a href="' + skyscraper_url + '{{ url }}"><span class="text-black block">{{{ nameToUse }}}{{{ cityToUse }}}</span></a></div>');
+            var templateCity = Hogan.compile('<div class="city"><a href="' + skyscraper_url + '/city/{{ url_name }}"><span class="text-black block">{{ name }}</span></a></div>');
+            var templateCountry = Hogan.compile('<div class="country"><a href="' + skyscraper_url + '/country/{{ url_name }}"><span class="text-black block">{{ name }}</span></a></div>');
+
+            var typeaheadCtrl = $('.search-inputs').typeahead({
+                minLength: 3,
+                hint: false,
+                highlight: false
+            }, [
+                {
+                    source: algoliaCTBUH.ttAdapter({
+                        hitsPerPage: 3,
+                        replaceSynonymsInHighlight: false,
+                        typoTolerance: 'strict'
+                    }),
+                    displayKey: 'title',
+                    templates: {
+                        header: "<div class='category'>CTBUH</div>",
+                        suggestion: function (hit) {
+                            return templateCTBUH.render(hit);
+                        },
+                    }
+                },
+                {
+                    source: algoliaPeople.ttAdapter({
+                        hitsPerPage: 3,
+                        replaceSynonymsInHighlight: false,
+                        typoTolerance: 'strict',
+                        filters: 'public_search = 1'
+                    }),
+                    displayKey: 'name',
+                    templates: {
+                        header: "<div class='category'>People</div>",
+                        suggestion: function (hit) {
+                            hit.url = hit.profile_link;
+                            return templatePerson.render(hit);
+
+                        },
+                    }
+                },
+                {
+                    source: algoliaBuildings.ttAdapter({
+                        hitsPerPage: 4,
+                        replaceSynonymsInHighlight: false,
+                        typoTolerance: 'strict'
+                    }),
+                    displayKey: 'name',
+                    templates: {
+                        header: "<div class='category'>Buildings</div>",
+                        suggestion: function (hit) {
+                            var cityToUse = '';
+                            var nameToUse = hit._highlightResult.name.value;
+
+                            if (hit.city != '') {
+                                cityToUse = ' <small>(' + hit.city + ')</small>';
+                            }
+
+                            hit.cityToUse = cityToUse;
+                            hit.nameToUse = nameToUse;
+
+                            return templateBuilding.render(hit);
+                        }
+                    }
+                },
+                {
+                    source: algoliaComplexes.ttAdapter({
+                        hitsPerPage: 3,
+                        replaceSynonymsInHighlight: false,
+                        typoTolerance: 'strict'
+                    }),
+                    displayKey: 'name',
+                    templates: {
+                        header: "<div class='category'>Building Complexes</div>",
+                        suggestion: function (hit) {
+                            var cityToUse = '';
+                            var nameToUse = hit._highlightResult.name.value;
+
+                            if (hit.city != '') {
+                                cityToUse = ' <small>(' + hit.city + ')</small>';
+                            }
+
+                            hit.cityToUse = cityToUse;
+                            hit.nameToUse = nameToUse;
+
+                            return templateComplex.render(hit);
+                        }
+                    }
+                },
+                {
+                    source: algoliaCompanies.ttAdapter({
+                        hitsPerPage: 3,
+                        replaceSynonymsInHighlight: false,
+                        typoTolerance: 'strict'
+                    }),
+                    displayKey: 'name',
+                    templates: {
+                        header: "<div class='category'>Companies</div>",
+                        suggestion: function (hit) {
+                            hit.url = '/company/' + hit.id;
+                            return templateCompany.render(hit);
+
+                        },
+                    }
+                },
+                {
+                    source: algoliaCities.ttAdapter({
+                        hitsPerPage: 3,
+                        replaceSynonymsInHighlight: false,
+                        typoTolerance: 'strict'
+                    }),
+                    displayKey: 'name',
+                    templates: {
+                        header: "<div class='category'>Cities</div>",
+                        suggestion: function (hit) {
+                            if (hit.slug) {
+                                hit.url_name = hit.slug;
+                            } else {
+                                hit.url_name = hit.name.replace(/ /g, '-').toLowerCase();
+                            }
+
+                            return templateCity.render(hit);
+                        },
+                    }
+                },
+                {
+                    source: algoliaCountries.ttAdapter({
+                        hitsPerPage: 3,
+                        replaceSynonymsInHighlight: false,
+                        typoTolerance: 'strict'
+                    }),
+                    displayKey: 'name',
+                    templates: {
+                        header: "<div class='category'>Countries</div>",
+                        suggestion: function (hit) {
+                            hit.url_name = hit.name.replace(/ /g, '-').toLowerCase();
+                            return templateCountry.render(hit);
+                        },
+                    }
+                }
+            ]);
+
+            typeaheadCtrl.on('typeahead:selected', function (evt, data) {
+                if (false && typeof data.url === "undefined") {
+                    alert(JSON.stringify(data));
+                } else {
+                    window.location = 'https://' + window.location.host + data.url;
+                }
+            });
+
+            // Append view all link
+            var AllResults = document.getElementsByClassName('all-results');
+            if (AllResults.length == 0) {
+                $('.tt-dropdown-menu').append('<h5 class="category all-results"><a id="view-all-link" href="/search"><span class="text-black">View all results</span></a></h5>');
+            }
+
+            $('#view-all-link').on('click', function (e) {
+                e.preventDefault();
+                window.location = skyscraper_url + '/search#q=' + $('.search-inputs').val();
+            });
+
+            // Append Algolia credit
+            var AlgoliaCredits = document.getElementsByClassName('powered-by-algoliasearch');
+            if (AlgoliaCredits.length == 0) {
+                $('.tt-dropdown-menu').append('<div class="powered-by-algoliasearch"><small><em>Powered by</em></small><a href="https://www.algolia.com/?utm_source=skyscrapercenter&amp;utm_medium=link&amp;utm_campaign=skyscrapercenter_search" title="Algolia Realtime Search" target="_blank"><img src="https://www.skyscrapercenter.com/img/algolia.png" alt="Algolia Realtime Search" width="48" height="15"></a></div>');
+            }
+        });
+    </script>
+</div>    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#header-menu-middle li, .sub-menu li').hover(function () {
+            if (!/Android|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+                $(this).find('.sub-menu-items-container').show();
+            }
+        });
+
+        $('#header-menu-middle li, .sub-menu li').mouseleave(function () {
+            $(this).find('.sub-menu-items-container').css('display', 'none');
+        });
+
+        $('#header-menu-middle li, .sub-menu li').click(function (event) {
+            $(this).find('.sub-menu-items-container').toggle();
+            $(this).find('.show-sub-menu').toggleClass('fa-angle-right');
+            $(this).find('.show-sub-menu').toggleClass('fa-angle-down');
+
+        });
+
+        $('#search-top-img').click(function () {
+            $('#search-top-container').css('display', 'block');
+            $('#close-search-input').css('display', 'inline-block');
+            $(this).hide();
+        })
+
+        $('#close-search-input').click(function () {
+            $('#search-top-container').hide();
+            $('#close-search-input').hide();
+            $('#search-top-img').css('display', 'inline-block');
+        })
+
+        var open = $('#mobile-menu-open-button');
+        var close = $('#mobile-menu-close-button');
+
+        open.click(function () {
+            $('.mobile-show-hide-nav').css('display', 'flex');
+            $('.top-nav-block').css('display', 'block');
+
+            open.hide();
+            close.css('display', 'inline-block');
+        });
+
+        close.click(function () {
+            $('.mobile-show-hide-nav').hide();
+            close.hide();
+            open.show();
+            $('#search-middle-container').hide();
+            $('#logo-img-container a').show();
+            $('#search-mobile-img').show();
+        });
+
+        $('#search-mobile-img').click(function () {
+            $('#search-middle-container').show();
+            $('#search-mobile-img').hide();
+            $('#search-mobile-img-close').show();
+        });
+
+        $('#search-mobile-img-close').click(function () {
+            $('#search-middle-container').hide();
+            $('#search-mobile-img-close').hide();
+            $('#search-mobile-img').show();
+        })
+    });
+</script>
+
+    <div class="body-content">
+                    <div class="sidebar-nav hidden md:block flex flex-col" style="left:0;">
+            <a href="/news/heritage-building-to-be-focal-point-of-tower-development-in-brampton"
+               class="flex-grow flex flex-row items-center whitespace-no-wrap bg-gray-400 hover:bg-gray-900 text-white">
+                <span class="inline">
+                    <i class="fas fa-chevron-left p-4"></i>
+                </span>
+                <span class="text pr-4 hidden">Previous Story</span>
+            </a>
+        </div>
+
+    
+            <div class="sidebar-nav hidden md:block flex flex-col" style="right:0;">
+            <a href="/news/new-beachfront-master-plan-revealed-in-phu-quoc"
+               class="flex-grow flex flex-row items-center whitespace-no-wrap bg-gray-400 hover:bg-gray-900 text-white">
+                <span class="text pl-4 hidden">Next Story</span>
+                <span class="inline">
+                    <i class="fas fa-chevron-right p-4"></i>
+                </span>
+            </a>
+        </div>
+    
+    <div class="w-full bg-white border-b">
+        <div class="container py-8">
+            <h1 class="text-darkgray md:pl-2 font-bold">Tall & Urban News</h1>
+        </div>
+    </div>
+
+    <div class="section section--white overflow-hidden">
+        <div class="container">
+            <div class="section__content flex-col text-black">
+
+                <div class="w-full md:w-3/5 mx-auto">
+
+                    <p class="font-body font-semibold text-darkgray leading-tight text-lg md:text-xl tracking-wide self-start">
+                                                    Infill Residential Tower Coming to Chicago's Lakefront
+                                            </p>
+
+                    
+                        <div class="mt-8">
+                                                            <img alt="(C) Anindya Chakraborty CC-BY-SA" class="max-h-1/4 max-w-2/4"
+                                     src="https://cdn.vox-cdn.com/thumbor/5KIRLSn3naXuDFQIaflIHqHTXUE=/0x0:1782x1432/920x613/filters:focal(1002x450:1286x734):format(webp)/cdn.vox-cdn.com/uploads/chorus_image/image/65138085/cityclubapartments1.0.png">
+                            
+                                                            <div class="text-darkgray text-center font-semibold text-xs mt-3">A rendering of the proposal at Lake Shore Drive and Waveland Avenue.  Courtesy of Chicago's 46th Ward</div>
+                                                    </div>
+
+                    
+                </div>
+
+                <div class="w-full md:w-3/5 md:flex items-end md:mt-4">
+
+                    <div class="w-full uppercase text-sm">
+
+                                                    <span>29 August 2019</span>
+                        
+                                                    <span class="px-4">|</span> <span>Chicago, United States</span>
+                        
+                    </div>
+
+                    <div class="max-w-md flex items-center mx-auto md:mx-0 pt-8 md:py-0">
+                        <a class="block h-10 w-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-gray-200 mr-2"
+                           href="https://www.facebook.com/CTBUH" target="_blank">
+                            <svg-icon style="height: .8em;
+                                        width: .8em;
+                                        margin-right: .2em;" icon="www/icon_social_facebook" class="mr-1"></svg-icon>
+                        </a>
+
+                        <a class="block h-10 w-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-gray-200 mr-2"
+                           href="https://twitter.com/CTBUH" target="_blank">
+                            <svg-icon icon="www/icon_social_twitter"></svg-icon>
+                        </a>
+
+                        <a class="block h-10 w-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-gray-200 mr-2"
+                           href="https://www.linkedin.com/groups/1898129/" target="_blank">
+                            <svg-icon icon="www/icon_social_linkedin" class="mb-1"></svg-icon>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="w-full md:w-3/5 mx-auto relative mt-8" id="story_container">
+
+                    <div class="section__text mt-0 hyperlink w-full" id="story_body">
+                        <p><a href="https://www.skyscrapercenter.com/building/city-club-apartments-lakeview/40931">City Club Apartments</a> has announced plans to develop a rare infill site on Chicago's famed Lake Shore Drive.
+
+        
+    
+        
+            
+<p>The proposal, presented to constituents of Chicago's 46th Ward, includes two mixed-use towers atop a sitewide base. The northern tower stands at 206 feet and 19 stories and its counterpart to the south stands at 66 feet and five stories in its current iteration. The number of residential units is yet to be determined as the developer continues to solicit feedback from City officials and the public.
+
+<p>Directly to the west of the site, the <a href="https://thenypr.com/building-facts/">New York Private Residences</a> towers 48 stories above the Lakeview neighborhood and currently enjoys unobstructed views of Lake Michigan. CCA will have to will have to contend with its nextdoor neighbors to build their towers as proposed. Original plans for the NYPR included a second tower on the site of the proposed building, and units in the existing building face Lake Michigan at 45-degree angles. A site plan also shows a 24-foot access driveway connecting the two developments via Inner Lake Shore Drive and Waveland Avenue.
+
+            <div class="block md:hidden my-8 wide-div">
+
+                <div class="w-full flex space-x-4 text-sm p-4 bg-gray-100">
+
+                    
+                        <div class="w-1/2">
+
+                            <div class="font-bold pb-2">
+                                Featured Buildings
+                            </div>
+
+                            
+                                <div class="mb-1">
+                                    <a href="http://www.skyscrapercenter.com/complex/5228" target="_blank">One Park
+                                        (Complex)</a>
+                                </div>
+
+                            
+                                                    </div>
+
+                    
+                    
+                    
+                </div>
+
+            </div>
+
+        
+    
+        
+            
+<p>The Ward office emphasizes that the proposal is still in its early stages and expressed a desire to garner feedback from local residents prior to meeting with the local Zoning Committee. The presentation CCA provided to the Ward office is available <a href="https://www.james46.org/wp-content/uploads/2019/08/LCC-NYPR-20190806-1716-Compressed-1.pdf">here</a>.
+
+        
+    
+        
+            
+<p>For more on this story, go to <a href="https://chicago.curbed.com/2019/8/29/20838675/lakeview-city-club-apartments-lake-shore-drive-waveland-cappleman" target="_blank" rel="noopener">Curbed Chicago.&nbsp;</a>
+
+        
+    
+        
+            
+
+        
+    
+                    </div>
+
+                    <!-- show sidebar only on mid or above -->
+                    <div class="hidden md:block absolute w-64 ml-8 h-full" id="story_body_sidebar">
+                        <div class="w-full font-bold text-md mb-4 mt-8 text-gray-800">
+        Complexes
+    </div>
+
+    <div class="border border-gray-500 bg-white">
+
+        
+            <div class=" p-3 text-sm">
+
+                <p>
+                    <a href="https://www.skyscrapercenter.com/building/city-club-apartments-lakeview/40931" target="_blank" class="font-semibold hyperlink">
+                        City Club Apartments
+                    </a>
+                </p>
+
+                                    <div>Chicago</div>
+                
+            </div>
+
+        
+    </div>
+
+
+                    </div>
+
+                    <div id="news_map">
+
+                                                    <div class="mt-6">
+                           <iframe width="750" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://www.openstreetmap.org/export/embed.html?bbox=-87.66276597976686%2C41.94286145953845%2C-87.6269316673279%2C41.95645832875157&amp;layer=mapnik&amp;marker=41.949659954713546%2C-87.64484673854895" style="border: 1px solid black"></iframe><br/><small><a href="https://www.openstreetmap.org/?mlat=41.9497&amp;mlon=-87.6448#map=16/41.9497/-87.6448">View Larger Map</a></small>
+
+                            </div>
+                        
+                    </div>
+
+                </div>
+
+                                    <related-resources :post-id="3529"
+                                       :show-info="false"></related-resources>
+
+                
+                <div class="w-full mx-auto mt-8">
+
+                    <h3 class="text-darkgray">
+                        Related News
+                    </h3>
+
+                    <div class="flex flex-col flex-wrap md:flex-row text-darkgray -mx-4"
+                         id="related_news_section"></div> 
+
+                    <div class="mt-5 sm:text-right">
+                        <a href="#" class="text-darkblue font-semibold mr-4" id="btn_see_more">
+                            See More Related News <i class="fas fa-chevron-down"></i>
+                        </a>
+                    </div>
+
+                </div>
+
+                <div class="flex mt-12">
+
+                    <a class="button w-full md:w-auto" href="https://www.ctbuh.org/global-news">
+                        <svg-icon icon="www/icon_arrow" class="stroke-current mr-4"></svg-icon>
+                        <span class="whitespace-no-wrap">View all Tall & Urban News</span>
+                    </a>
+
+                </div>
+
+                <div class="w-full mt-8 flex block md:hidden">
+
+                    <div class="w-1/2">
+                                                    <a href="/news/heritage-building-to-be-focal-point-of-tower-development-in-brampton" class="button w-16"
+                               data-toggle="tooltip" title="Read Previous: Heritage Building to be Focal Point of Tower Development in Brampton">
+                                <i class="fas fa-chevron-left"></i>
+                            </a>
+                                            </div>
+
+                    <div class="w-1/2">
+
+                                                    <a href="/news/new-beachfront-master-plan-revealed-in-phu-quoc" class="button w-16 float-right"
+                               data-toggle="tooltip" title="Next Story: New Beachfront Master Plan Revealed in Phú Quốc">
+                                <i class="fas fa-chevron-right"></i>
+                            </a>
+                        
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <footer class="pt-12 lg:pt-20 bg-black text-white">
+    <div class="container flex lg:justify-between flex-wrap lg:flex-no-wrap pb-6">
+        <img class="h-100p md:h-140p lg:self-end lg:mb-3 lg:mr-12"
+             src="https://www.ctbuh.org/new-img/footer/footer-logo-white.png">
+        <div class="lg:self-end w-full lg:max-w-xs flex flex-col lg:order-none order-last lg:mr-auto lg:ml-0">
+            <button class="button-new button-new--white button-new--block mb-5"
+                    onclick="showModal();">Sign up for Updates</button>
+            <div class="social-content flex items-center justify-around mx-5 lg:mx-0">
+                <a class="block mr-2" href="https://twitter.com/CTBUH" target="_blank">
+                    <img style="height: 51.92px;" src="https://www.ctbuh.org/new-img/footer/twitter-footer.png">
+                </a>
+                <a class="block mr-2" href="https://www.instagram.com/ctbuh_hq/" target="_blank">
+                    <img style="height: 27.09px;" src="https://www.ctbuh.org/new-img/footer/instagram-footer.png">
+                </a>
+                <a class="block mr-2" href="https://www.youtube.com/user/ctbuh" target="_blank">
+                    <img style="height: 42.48px;" src="https://www.ctbuh.org/new-img/footer/youtube-footer.png">
+                </a>
+                <a class="block mr-2" href="https://www.facebook.com/CTBUH" target="_blank">
+                    <img style="height: 27.09px;" src="https://www.ctbuh.org/new-img/footer/facebook-footer.png">
+                </a>
+                <a class="block mr-2"
+                   href="https://www.linkedin.com/company/council-on-tall-buildings-and-urban-habitat/" target="_blank">
+                    <img style="height: 49.53px;" src="https://www.ctbuh.org/new-img/footer/linkedin-footer.png">
+                </a>
+                <a class="block mr-2" href="https://mp.weixin.qq.com/s/RLOqgvTosPoD8RLugaWqxQ" target="_blank">
+                    <img style="height: 27px;" src="https://www.ctbuh.org/new-img/footer/message-footer.png">
+                </a>
+            </div>
+        </div>
+        <div class="w-full lg:w-3/12 my-8 lg:my-0 text-white font-semibold">
+            <a class="block" href="https://www.ctbuh.org/about/careers">Careers at CTBUH</a>
+            <a class="block"
+               href="https://www.skyscrapercenter.com/submit">Submit Data &amp; Photos</a>
+            <a class="block" href="/about/faq">FAQ</a>
+            <a class="block" href="https://www.ctbuh.org/about/contact">Contact Us</a>
+        </div>
+    </div>
+    <div class="container">
+        <div class="w-full clear border-b border-lightgray"></div>
+    </div>
+    <div class="footer-text w-full text-center pt-6 pb-16 lg:py-8">
+        &copy; 2019 Council on Tall Buildings and Urban Habitat</div>
+    <div class="text-white w-full text-center text-sm">
+   Sample page created by S. Isaac Work for CTBUH Admin Testing</div>
+   <br></br>
+</footer>
+<div id="modal" class="modal-invisible">
+        <div>
+            <button onclick="hideModal()" title="Close" class="modal-close">Close</button>
+
+            <h3 class="mt-4">Get the Latest News and Updates from CTBUH</h3>
+
+            <iframe src="https://marketing.ctbuh.org/l/878592/2020-08-24/dd7" width="100%" height="450" type="text/html"
+                    frameborder="0" allowTransparency="true" style="border: 0"></iframe>
+
+            <p class="w-full text-center">Fields with an asterisk (*) next to them are required.</p>
+
+            <a href="https://www.ctbuh.org/privacy-policy" class="block w-full text-center">
+                View our privacy policy
+            </a>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        function showModal() {
+            document.getElementById('modal').classList.remove('modal-invisible');
+            document.getElementById('modal').classList.add('modal-visible');
+        }
+
+        function hideModal() {
+            document.getElementById('modal').classList.remove('modal-visible');
+            document.getElementById('modal').classList.add('modal-invisible');
+        }
+    </script>
+
+</div>
+
+<div class="js-cookie-consent cookie-consent">
+
+    <span class="cookie-consent__message">
+        We use cookies to improve your experience on our website. Review our <a href="/privacy-policy/" target="_blank" class="link_pp">Privacy Policy</a> for more information.</span>
+    </span>
+
+    <button class="js-cookie-consent-agree cookie-consent__agree">
+        Allow cookies
+    </button>
+
+</div>
+
+    <script>
+
+        window.laravelCookieConsent = (function () {
+
+            const COOKIE_VALUE = 1;
+            const COOKIE_DOMAIN = '.ctbuh.org';
+
+            function consentWithCookies() {
+                setCookie('laravel_cookie_consent', COOKIE_VALUE, 7300);
+                hideCookieDialog();
+            }
+
+            function cookieExists(name) {
+                return (document.cookie.split('; ').indexOf(name + '=' + COOKIE_VALUE) !== -1);
+            }
+
+            function hideCookieDialog() {
+                const dialogs = document.getElementsByClassName('js-cookie-consent');
+
+                for (let i = 0; i < dialogs.length; ++i) {
+                    dialogs[i].style.display = 'none';
+                }
+            }
+
+            function setCookie(name, value, expirationInDays) {
+                const date = new Date();
+                date.setTime(date.getTime() + (expirationInDays * 24 * 60 * 60 * 1000));
+                document.cookie = name + '=' + value
+                    + ';expires=' + date.toUTCString()
+                    + ';domain=' + COOKIE_DOMAIN
+                    + ';path=/'
+                    + '';
+            }
+
+            if (cookieExists('laravel_cookie_consent')) {
+                hideCookieDialog();
+            }
+
+            const buttons = document.getElementsByClassName('js-cookie-consent-agree');
+
+            for (let i = 0; i < buttons.length; ++i) {
+                buttons[i].addEventListener('click', consentWithCookies);
+            }
+
+            return {
+                consentWithCookies: consentWithCookies,
+                hideCookieDialog: hideCookieDialog
+            };
+        })();
+    </script>
+
+
+
+
+<script>
+    // global options
+    window.ctbuh = window.ctbuh || {};
+    window.ctbuh.html_blocks = window.ctbuh.html_blocks || {};
+</script>
+
+<script src="/js/www/app.js?id=3ebb0e959cd8b79941ce"></script>
+<script src="/js/www/vendor.js?id=1e984996ee5217fd4f11"></script>
+
+<script>
+    var _tippy_instances = [];
+
+    function api_url(path) {
+        return config.api_base_url + '/' + path;
+    }
+
+    function load_tooltips() {
+        for (var i in _tippy_instances) {
+            //  _tippy_instances[i].destroy();
+        }
+
+        //  _tippy_instances.length = 0;
+
+        $("[data-toggle=tooltip]").each(function () {
+
+            if (typeof this._tippy === 'undefined') {
+
+                tippy(this, {
+                    delay: 0,
+                    animation: false,
+                    allowHTML: true,
+                    maxWidth: 'none',
+                    //interactive: true,
+                    boundary: 'viewport',
+                    appendTo: 'parent', // TWO HOURS!!
+                    popperOptions: {
+                        //placement: 'top-start'
+                    },
+                    //trigger: 'mouseenter focus',
+                    zIndex: 9999,
+                    content: function (reference) {
+                        const title = reference.getAttribute('title');
+                        reference.removeAttribute('title');
+                        return title;
+                    }
+                });
+            }
+        });
+    }
+
+    function sso_logout() {
+        $.ajax({
+            url: skyscraper_url + '/oauth/logout',
+            jsonp: 'callback',
+            dataType: 'jsonp',
+            complete: function (data) {
+                window.location = '/oauth/logout';
+            }
+        });
+
+        // just in case
+        setTimeout(function () {
+            window.location = '/oauth/logout';
+        }, 2500);
+
+        return false;
+    }
+
+    function redirectWithQuery(name, value) {
+
+        if ('URLSearchParams' in window) {
+            var searchParams = new URLSearchParams(window.location.search);
+            searchParams.set(name, value);
+            var redirect_to = window.location.href.split('?')[0] + '?' + searchParams.toString();
+            window.location = redirect_to;
+        } else {
+            window.location = window.location + '?' + name + '=' + value;
+        }
+    }
+
+    $(function () {
+        window.adminBar.boot();
+
+        window['config'] = {"is_admin":false,"admin":null,"api_base_url":"https://api.ctbuh.org"};
+
+        load_tooltips();
+
+        // we are not logged in AND not on special URL
+        if (!window.logged_in && !window.logged_in_url) {
+
+            var sc = skyscraper_url;
+
+            // check to see if we are logged in on skyscrapercenter
+            $.ajax({
+                url: sc + '/oauth/status',
+                jsonp: 'callback',
+                dataType: 'jsonp',
+                success: function (data) {
+                    console.log(data);
+
+                    if (!data.error) {
+
+                        // we are logged in!
+                        if ('tokens' in data) {
+                            var at = data.tokens.access_token;
+                            var rt = data.tokens.refresh_token;
+
+                            // log me in!
+                            $.post('/oauth/loginUsingToken', {
+                                access_token: at,
+                                refresh_token: rt
+                            }, function (res) {
+                                console.log(res);
+                                redirectWithQuery('logged_in', 'true');
+                            });
+                        }
+                    }
+                }
+            });
+        }
+    });
+</script>
+
+<!-- BEGIN: script contents from custom blocks -->
+
+
+<!-- END: script contents from custom blocks -->
+
+    <script>
+        var _post_id = 0;
+        var related_news_start_from = 0;
+
+        function load_more_news(count) {
+
+            var btn = $("#btn_see_more");
+
+            btn.prop('disabled', true);
+            btn.find('i').removeClass('fa-chevron-down').addClass('fa-spinner fa-spin');
+
+            $.get(api_url('/v3/global_news/' + _post_id + '/related_news'), {
+                start_from: related_news_start_from,
+                count: count,
+                show_info: config.is_admin ? 1 : 0
+            }, function (res) {
+                console.log(res);
+
+                var data = res.data.items;
+
+                for (var i in data) {
+
+                    var news_post = data[i];
+
+                    var admin_bar = '';
+
+                    if (config.is_admin) {
+                        admin_bar = `
+
+                <div class="flex justify-around text-sm hidden lg:flex">
+
+                        <a href="#" data-toggle="tooltip" title="${news_post.related_info}">
+                            <i class="far fa-question-circle"></i> Why?
+                        </a>
+
+                        <a href="#" data-toggle="tooltip" title="Hide this from related" class="text-red-200 hide_news" data-id="${news_post.id}">
+                            <i class="far fa-minus-square"></i> Hide
+                        </a>
+
+                </div>
+                        `;
+                    }
+
+                    var html = `<div class="w-full lg:max-w-1/3 lg:w-1/3 md:mt-5">${news_post.html} ${admin_bar}</div>`;
+
+                    $("#related_news_section").append(html);
+                }
+
+                related_news_start_from += data.length;
+
+                if (!res.data.has_next) {
+                    btn.hide();
+                }
+
+                if (count === 3 && !data.length) {
+                    $("#related_news_section").parent().find(".section__title").remove();
+                }
+
+            }).fail(function (err) {
+                alert('Something went wrong :(');
+            }).always(function () {
+
+                btn.prop('disabled', false);
+                btn.find('i').removeClass('fa-spinner fa-spin').addClass('fa-chevron-down');
+
+                load_tooltips();
+
+                if (count === 6) {
+                    btn.hide();
+                }
+
+            });
+        }
+
+        $(function () {
+            $("#related_news_section").on("click", '.hide_news', function (e) {
+
+                e.preventDefault();
+
+                var oThis = $(this);
+                var post_id = $(this).data('id');
+
+                $.post('/nova/ajax/news/hide_item', {
+                    id: _post_id,
+                    post_id: post_id,
+                }, function (res) {
+                    console.log(res);
+                    oThis.parent().parent().find('.card-news-post').fadeTo(300, 0.2);
+                });
+
+                return false;
+            });
+
+            _post_id = $('meta[name=post_id]').attr('content');
+
+            load_more_news(3);
+
+            $("#btn_see_more").click(function (e) {
+                e.preventDefault();
+
+                load_more_news(6);
+
+                return false;
+            });
+        });
+    </script>
+
+    <!-- Matomo -->
+    <script type="text/javascript">
+        var _paq = window._paq || [];
+        /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+
+        
+        _paq.push(['trackPageView']);
+        _paq.push(['enableLinkTracking']);
+        (function () {
+            var u = "https://analytics.ctbuh.org/";
+            _paq.push(['setTrackerUrl', u + 'matomo.php']);
+            _paq.push(['setSiteId', '2']);
+            var d = document, g = d.createElement('script'), s = d.getElementsByTagName('script')[0];
+            g.type = 'text/javascript';
+            g.async = true;
+            g.defer = true;
+            g.src = u + 'matomo.js';
+            s.parentNode.insertBefore(g, s);
+        })();
+    </script>
+    <noscript><p><img src="https://analytics.ctbuh.org/matomo.php?idsite=2&amp;rec=1" style="border:0;" alt=""/>
+        </p></noscript>
+    <!-- End Matomo Code -->
+
+    <script src="//rum-static.pingdom.net/pa-5d2e3552b258c50008000136.js" async></script>
+
+
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v652eace1692a40cfa3763df669d7439c1639079717194" integrity="sha512-Gi7xpJR8tSkrpF7aordPZQlW2DLtzUlZcumS8dMQjwDHEnw9I7ZLyiOj/6tZStRBGtGgN6ceN6cMH8z7etPGlw==" data-cf-beacon='{"rayId":"6f10cf4b3e722d4c","version":"2021.12.0","r":1,"token":"0876930d0a1a43af8ba2afca5ce1180d","si":100}' crossorigin="anonymous"></script>
+</body>
+</html>
